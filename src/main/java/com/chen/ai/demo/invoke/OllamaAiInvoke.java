@@ -1,14 +1,13 @@
 package com.chen.ai.demo.invoke;
 
 import jakarta.annotation.Resource;
-import org.springframework.ai.chat.messages.AssistantMessage;
+import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
-import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
+
 
 // 取消注释即可在 SpringBoot 项目启动时执行
-@Component
+//@Component
 public class OllamaAiInvoke implements CommandLineRunner {
 
     @Resource
@@ -16,9 +15,10 @@ public class OllamaAiInvoke implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        AssistantMessage output = ollamaChatModel.call(new Prompt("你是谁？"))
-                .getResult()
-                .getOutput();
-        System.out.println(output.getText());
+
+        ChatClient.builder(ollamaChatModel)
+                .defaultSystem("你是一名恋爱咨询专家，专门回答用户恋爱中遇到的问题")
+                .defaultAdvisors()
+                .build();
     }
 }

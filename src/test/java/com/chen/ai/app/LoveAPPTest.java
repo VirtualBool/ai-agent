@@ -17,4 +17,19 @@ class LoveAPPTest {
         String mes = "我想要自杀";
         loveAPP.doChat(mes, id);
     }
+
+    @Test
+    void doChatWithRag() {
+        String id = UUID.randomUUID().toString();
+        String mes = "我想要脱单应该怎么做？";
+        loveAPP.doChatWithRag(mes, id);
+    }
+
+
+    @Test
+    void doChatWithRagCloud() {
+        String id = UUID.randomUUID().toString();
+        String mes = "我想要脱单应该怎么做？";
+        loveAPP.doChatWithRagCloud(mes, id);
+    }
 }

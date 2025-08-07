@@ -32,4 +32,13 @@ class LoveAPPTest {
         String mes = "我想要脱单应该怎么做？";
         loveAPP.doChatWithRagCloud(mes, id);
     }
+
+    @Test
+    void doChatWithTools() {
+        String id = UUID.randomUUID().toString();
+        String mes = "北京现在的天气";
+        loveAPP.doChatWithTools(mes, id);
+        mes = "总结pdf文档内容，文件名为 “vitae.pdf”";
+        loveAPP.doChatWithTools(mes, id);
+    }
 }

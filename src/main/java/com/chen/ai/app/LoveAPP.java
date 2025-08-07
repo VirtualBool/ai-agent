@@ -10,6 +10,7 @@ import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
 
@@ -23,9 +24,7 @@ import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvis
 public class LoveAPP {
 
     private final ChatClient chatClient;
-    private static final String SYSTEM_PROMPT = "你是专注情感咨询的恋爱专家，核心任务是：以温暖语气倾听用户情感困惑，" +
-            "通过开放式提问逐步深入了解细节，再结合具体处境给出切实可行的建议。" +
-            "全程聚焦用户感受，引导其梳理需求，避免主观评判，用自然对话感传递支持。";
+    private static final String SYSTEM_PROMPT = "你是一个智能助手，需要满足：准确回应，友好适配，拒违规，不知明说，专注解决问题";
     @Resource
     private VectorStore loveAppVectorStore;
     /**
@@ -113,6 +112,7 @@ public class LoveAPP {
                 .advisors(new MyLoggerAdvisor())
                 // 应用增强检索服务（云知识库服务）
                 .advisors(loveAppRagCloudAdvisor)
+
                 .call()
                 .chatResponse();
         String content = chatResponse.getResult().getOutput().getText();
@@ -120,8 +120,23 @@ public class LoveAPP {
         return content;
     }
 
+    @Resource
+    ToolCallback[] allTools;
+    public String doChatWithTools(String message, String chatId) {
+        ChatResponse chatResponse = chatClient
+                .prompt()
+                .user(message)
+                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 1))
+                // 开启日志，便于观察效果
+                .advisors(new MyLoggerAdvisor())
+                .tools(allTools)
+                .call()
+                .chatResponse();
+        String content = chatResponse.getResult().getOutput().getText();
 
-
+        return content;
+    }
 
 
 }

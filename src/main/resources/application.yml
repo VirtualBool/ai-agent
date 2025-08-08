@@ -3,6 +3,12 @@ spring:
     name: ai-agent
   profiles:
     active: local
+  ai:
+    mcp:
+      client:
+        stdio:
+          servers-configuration: classpath:mcp-servers.json
+
 server:
   port: 8123
   servlet:

@@ -41,4 +41,11 @@ class LoveAPPTest {
         mes = "总结pdf文档内容，文件名为 “vitae.pdf”";
         loveAPP.doChatWithTools(mes, id);
     }
+
+    @Test
+    void doChatWithMcp() {
+        String id = UUID.randomUUID().toString();
+        String mes = "我在北京丰台区洋桥村，帮我推荐几个十公里内的景点";
+        loveAPP.doChatWithMcp(mes, id);
+    }
 }
